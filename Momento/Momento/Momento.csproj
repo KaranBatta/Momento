@@ -294,6 +294,12 @@
   <ItemGroup>
     <Content Include="packages.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\LoginApi\trunk\LoginApiApplication\LoginApiApplication\LoginApiApplication.csproj">
+      <Project>{86923bb8-4830-4114-a7b5-5b20f86e5b5f}</Project>
+      <Name>LoginApiApplication</Name>
+    </ProjectReference>
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
