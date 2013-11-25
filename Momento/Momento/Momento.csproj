@@ -44,6 +44,8 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Data.Entity" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -180,11 +182,38 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\Subscriber\Extensions\PasswordHash.cs" />
+    <Compile Include="Models\Subscriber\Extensions\StringExtensions.cs" />
+    <Compile Include="Models\MemberViewModel.cs" />
+    <Compile Include="Models\Subscriber\UserActions\IUserCoordinator.cs" />
+    <Compile Include="Models\Subscriber\UserActions\UserCoordinator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Subscriber.Context.cs">
+      <DependentUpon>Subscriber.Context.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Subscriber.cs">
+      <DependentUpon>Subscriber.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Subscriber.Designer.cs">
+      <DependentUpon>Subscriber.edmx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="User.cs">
+      <DependentUpon>Subscriber.tt</DependentUpon>
+    </Compile>
+    <Compile Include="UserAccount.cs">
+      <DependentUpon>Subscriber.tt</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\landing.css" />
@@ -260,6 +289,7 @@
     <Content Include="Scripts\knockout-2.2.0.debug.js" />
     <Content Include="Scripts\knockout-2.2.0.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
+    <Content Include="Subscriber.edmx.sql" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -288,20 +318,32 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Web.config" />
     <Content Include="Views\Shared\_Landing.cshtml" />
+    <Content Include="Views\Shared\Partials\_Signup.cshtml" />
+    <Content Include="Views\Shared\Partials\_Login.cshtml" />
+    <EntityDeploy Include="Subscriber.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>Subscriber.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="Subscriber.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>Subscriber.edmx</DependentUpon>
+      <LastGenOutput>Subscriber.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="Subscriber.edmx.diagram">
+      <DependentUpon>Subscriber.edmx</DependentUpon>
+    </Content>
+    <Content Include="Subscriber.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>Subscriber.edmx</DependentUpon>
+      <LastGenOutput>Subscriber.cs</LastGenOutput>
+    </Content>
+    <Content Include="Views\Account\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Models\" />
-    <Folder Include="Views\Account\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\..\LoginApi\trunk\LoginApiApplication\LoginApiApplication\LoginApiApplication.csproj">
-      <Project>{86923bb8-4830-4114-a7b5-5b20f86e5b5f}</Project>
-      <Name>LoginApiApplication</Name>
-    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

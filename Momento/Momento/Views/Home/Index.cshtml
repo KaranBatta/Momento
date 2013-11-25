@@ -1,5 +1,15 @@
-﻿@{
+﻿@model Momento.Models.MemberViewModel
+
+@{
     Layout = "~/Views/Shared/_Landing.cshtml";
 }
 
-<h1>SUP!!!!!!!!!!!!!!</h1>
+@{  
+    <div id="loginContainer">
+        @Html.Partial("Partials/_Login")
+    </div>@*
+    <div id="registerContainer">
+        @Html.Partial("Partials/_Signup")
+    </div>*@ 
+}
+

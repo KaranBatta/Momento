@@ -1,5 +1,6 @@
 ﻿html {
-	background: url(/images/LandingPage/background.jpg) no-repeat center center fixed; 
+	/*background: url(/images/LandingPage/background.jpg) no-repeat center center fixed;*/
+    background-color: blanchedalmond; 
 		-webkit-background-size: cover;
 		-moz-background-size: cover;
 		-o-background-size: cover;

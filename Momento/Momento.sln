@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Momento", "Momento\Momento.csproj", "{C8CBA1B1-0DB8-4D38-B0E3-47D6F09CC358}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoginApiApplication", "..\..\..\LoginApi\trunk\LoginApiApplication\LoginApiApplication\LoginApiApplication.csproj", "{86923BB8-4830-4114-A7B5-5B20F86E5B5F}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,10 +13,6 @@ Global
 		{C8CBA1B1-0DB8-4D38-B0E3-47D6F09CC358}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C8CBA1B1-0DB8-4D38-B0E3-47D6F09CC358}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C8CBA1B1-0DB8-4D38-B0E3-47D6F09CC358}.Release|Any CPU.Build.0 = Release|Any CPU
-		{86923BB8-4830-4114-A7B5-5B20F86E5B5F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{86923BB8-4830-4114-A7B5-5B20F86E5B5F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{86923BB8-4830-4114-A7B5-5B20F86E5B5F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{86923BB8-4830-4114-A7B5-5B20F86E5B5F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,0 +1,19 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div id='output'>
+    <a href="@Url.Action("Logout", "Home")">Logout</a>
+</div>
+<div id='map'></div>
+<script>
+    var geocoder = L.mapbox.geocoder('examples.map-vyofok3q'),
+        map = L.mapbox.map('map', 'examples.map-vyofok3q')
+
+    geocoder.query('Chester, NJ', showMap);
+
+    function showMap(err, data) {
+        map.fitBounds(data.lbounds);
+    }
+</script>

@@ -1,0 +1,25 @@
+﻿@model Momento.Models.MemberViewModel
+
+@using (Html.BeginForm("Signup", "Home", FormMethod.Post))
+{
+    <h1>Sign up</h1>
+    <p>
+        <label for="usernamesignup" class="uname" data-icon="u">Email</label>
+        @Html.TextBoxFor(m => m.Username, new {placeholder = "email", required = "required", type = "text"})
+    </p>
+    <p>
+        <label for="passwordsignup" class="pass" data-icon="p">Password</label>
+        @Html.PasswordFor(m => m.Password, new {placeholder = "password", required = "required", type = "password"})
+    </p>
+    <p>
+        <label for="passwordsignup_confirm" class="pass" data-icon="p">Confirm Password</label>
+        @Html.PasswordFor(m => m.ConfirmPassword, new {placeholder = "password", required = "required", type = "password"})
+    </p>
+    <p class="signup">
+         <input type="submit" value="Join us!"/>
+    </p>@*
+    <p class="changeLink">
+        Already a member?
+        <a href="#toLogin" class="toLogin">Login</a>
+    </p>*@
+}
