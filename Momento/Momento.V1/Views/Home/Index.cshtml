@@ -1,0 +1,58 @@
+﻿@using Momento.V1.Models
+@model Momento.V1.Models.Memories
+
+@{
+    ViewBag.Title = "Home Page";
+}
+<style>
+    body { margin:0; padding:0; }
+    #map { position:absolute; top:0; bottom:0; width:100%; }
+</style>
+
+<div id='map'></div>
+<script>
+    var mapboxTiles = L.tileLayer('https://{s}.tiles.mapbox.com/v3/examples.map-zr0njcqy/{z}/{x}/{y}.png');
+    var map = L.map('map').addLayer(mapboxTiles).setView([40, -74.50], 13);
+
+    var clickCount = 0;
+
+    map.addEventListener('click', function (e) {
+        clickCount++;
+        if (clickCount === 1) {
+            singleClickTimer = setTimeout(function() {
+                clickCount = 0;
+                singleClick(e);
+            },400);
+        } else if (clickCount === 2) {
+            clearTimeout(singleClickTimer);
+            clickCount = 0;
+            doubleClick(e);
+        }
+    }, false);
+    
+    //When Single Click happens on the map, add a new Marker
+    function singleClick(e) {
+        var popupTemplate = '<form action="@Url.Action("AddMemory","Home")">Memory: ' +
+            '                   @Html.TextBoxFor(m => m.MemoryList[0].Name, new {placeholder = "memory name..", type = "text"})' +
+            '                   <br>Description: ' +
+            '                   @Html.TextBoxFor(m => m.MemoryList[0].Description, new {placeholder = "memory description..", type = "text"})' +
+            '                   <br>Tags (comma seperated):' +
+            '                   @Html.TextBoxFor(m => m.MemoryList[0].Tags)' +
+            '                   <br>' +
+            '                   <input type="submit" value="Submit">' +
+            '               </form>';
+        var marker = L.marker([e.latlng.lat, e.latlng.lng],
+            { draggable: false },
+            { clickable: true },
+            { title: 'title' },
+            { alt: 'alt' },
+            { riseOnHover: true }).addTo(map);
+        marker.bindPopup(popupTemplate).openPopup();
+        map.setView(e.latlng, map.getZoom());
+    }
+    
+    //When Double Click happens zoom in and center to the clicked region
+    function doubleClick(e) {
+        map.setView(e.latlng, map.getZoom() + 1);
+    }
+</script>

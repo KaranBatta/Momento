@@ -7,11 +7,12 @@ using UserCoordinator = Momento.Models.Subscriber.UserActions.UserCoordinator;
 
 namespace Momento.Controllers
 {
+    [RequireHttpsAttribute]
     public class HomeController : Controller
     {
         public ActionResult Index()
         {
-            return View();
+            return RedirectToAction("Index", "Account");
         }
 
         [AcceptVerbs(HttpVerbs.Post)]
