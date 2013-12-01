@@ -11,9 +11,29 @@
 
 <div id='map'></div>
 <script>
+    //Initialize the Mapbox Tiles layer
     var mapboxTiles = L.tileLayer('https://{s}.tiles.mapbox.com/v3/examples.map-zr0njcqy/{z}/{x}/{y}.png');
-    var map = L.map('map').addLayer(mapboxTiles).setView([40, -74.50], 13);
+    var map = L.map('map').addLayer(mapboxTiles);
+    
+    //Find the users location to get the initial position of the map
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(locationSuccess, locationFail);
+    } else {
+        alert("Geolocation is not currently supported in your bowser so we cannot find the nearest moments for you");
+    }
+    
+    function locationSuccess(position)
+    {
+        map.setView([position.coords.latitude, position.coords.longitude], 13);
+    }
+    
+    //set the initial location to San Francisco if Geoposition failed and alert the user
+    function locationFail(geoPositionError) {
+        map.setView([37, -122], 13);
+        alert(geoPositionError);
+    }
 
+    //Seperate the double and single click
     var clickCount = 0;
 
     map.addEventListener('click', function (e) {
@@ -22,7 +42,7 @@
             singleClickTimer = setTimeout(function() {
                 clickCount = 0;
                 singleClick(e);
-            },400);
+            },700);
         } else if (clickCount === 2) {
             clearTimeout(singleClickTimer);
             clickCount = 0;
