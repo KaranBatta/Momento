@@ -1,78 +1,134 @@
-﻿@using Momento.V1.Models
+﻿@using System.Web.UI.WebControls
+@using Momento.V1.Models
 @model Momento.V1.Models.Memories
 
 @{
     ViewBag.Title = "Home Page";
 }
-<style>
-    body { margin:0; padding:0; }
-    #map { position:absolute; top:0; bottom:0; width:100%; }
-</style>
 
-<div id='map'></div>
-<script>
-    //Initialize the Mapbox Tiles layer
-    var mapboxTiles = L.tileLayer('https://{s}.tiles.mapbox.com/v3/examples.map-zr0njcqy/{z}/{x}/{y}.png');
-    var map = L.map('map').addLayer(mapboxTiles);
+@*@using (Html.BeginForm("AddMemory", "Home", FormMethod.Post))
+{*@
     
-    //Find the users location to get the initial position of the map
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(locationSuccess, locationFail);
-    } else {
-        alert("Geolocation is not currently supported in your bowser so we cannot find the nearest moments for you");
-    }
-    
-    function locationSuccess(position)
-    {
-        map.setView([position.coords.latitude, position.coords.longitude], 13);
-    }
-    
-    //set the initial location to San Francisco if Geoposition failed and alert the user
-    function locationFail(geoPositionError) {
-        map.setView([37, -122], 13);
-        alert(geoPositionError);
-    }
+    <div id="sidebar">
+        <h1 style="color:cornflowerblue;"><strong>Your Moments</strong></h1>
+        <div id="outer-moment" style="height:150px;border:1px double #00ff00;display:block;">
+            <div id="inner-moment" style="height:50px;display:block;">
+                <img id="inner-moment-img" src="http://placekitten.com/g/20/20" height="50" width="50" style="float:left;"/>
+                <h4 id="inner-moment-h4" style="padding-left:60px;padding-top:20px;"></h4>    
+            </div>
+            <div id="inner-moment-desc" style="height:80px;margin-top:10px;display:block;">
+                <p id="inner-p">tenl;jnf nkjdfn;wgkej f;zkjsdnf jksdnfjh bsdjhfb skjdhbf kawjehf bkjdbc ljshebrfh sdhb sjhdb sjdhbf wkjehbf sjdhfb wejhbf</p>    
+            </div>
+        </div>
+        <br />
+        
+        <div id="test">
+            <h1 id="test-header"></h1>
+            <p id="test-desc"></p>
+            <img id="test-img" src="." alt="" />
+        </div>
+        
 
-    //Seperate the double and single click
-    var clickCount = 0;
+    </div>
 
-    map.addEventListener('click', function (e) {
-        clickCount++;
-        if (clickCount === 1) {
-            singleClickTimer = setTimeout(function() {
-                clickCount = 0;
-                singleClick(e);
-            },700);
-        } else if (clickCount === 2) {
-            clearTimeout(singleClickTimer);
-            clickCount = 0;
-            doubleClick(e);
+    <div id="map" class="map"></div>
+
+    @Html.HiddenFor(m => m.MemoryList[0].Longitude, new {id = "lng"})
+    @Html.HiddenFor(m => m.MemoryList[0].Latitude, new {id = "lat"})
+
+    <script>
+
+        //Initialize the Mapbox Tiles layer and leaflet options
+        var mapboxTiles = L.tileLayer('https://{s}.tiles.mapbox.com/v3/examples.map-zr0njcqy/{z}/{x}/{y}.png');
+        var map = L.map('map', { zoomControl: false }, {loadingControl: true}).addLayer(mapboxTiles);
+
+        //Find the users location to get the initial position of the map
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(locationSuccess, locationFail);
+        } else {
+            alert("Geolocation is not currently supported in your bowser so we cannot find the nearest moments for you");
         }
-    }, false);
-    
-    //When Single Click happens on the map, add a new Marker
-    function singleClick(e) {
-        var popupTemplate = '<form action="@Url.Action("AddMemory","Home")">Memory: ' +
-            '                   @Html.TextBoxFor(m => m.MemoryList[0].Name, new {placeholder = "memory name..", type = "text"})' +
-            '                   <br>Description: ' +
-            '                   @Html.TextBoxFor(m => m.MemoryList[0].Description, new {placeholder = "memory description..", type = "text"})' +
-            '                   <br>Tags (comma seperated):' +
-            '                   @Html.TextBoxFor(m => m.MemoryList[0].Tags)' +
-            '                   <br>' +
-            '                   <input type="submit" value="Submit">' +
-            '               </form>';
-        var marker = L.marker([e.latlng.lat, e.latlng.lng],
-            { draggable: false },
-            { clickable: true },
-            { title: 'title' },
-            { alt: 'alt' },
-            { riseOnHover: true }).addTo(map);
-        marker.bindPopup(popupTemplate).openPopup();
-        map.setView(e.latlng, map.getZoom());
-    }
-    
-    //When Double Click happens zoom in and center to the clicked region
-    function doubleClick(e) {
-        map.setView(e.latlng, map.getZoom() + 1);
-    }
-</script>
+
+        //If we locate the user on page load, then set the initial location to the users location
+        function locationSuccess(position) {
+            map.setView([position.coords.latitude, position.coords.longitude], 13);
+        }
+
+        //set the initial location to San Francisco if Geoposition failed and alert the user
+        function locationFail(geoPositionError) {
+            map.setView([37, -122], 14);
+            alert(geoPositionError);
+        }
+
+        //Seperate the double and single click
+        var clickCount = 0;
+        map.addEventListener('click', function(e) {
+            clickCount++;
+            if (clickCount === 1) {
+                singleClickTimer = setTimeout(function() {
+                    clickCount = 0;
+                    singleClick(e);
+                }, 700);
+            } else if (clickCount === 2) {
+                clearTimeout(singleClickTimer);
+                clickCount = 0;
+                doubleClick(e);
+            }
+        }, false);
+
+        var marker;
+        //When Single Click happens on the map, add a new Marker
+        function singleClick(e) {
+            var popupTemplate = 'Memory: ' +
+                '                   @Html.TextBoxFor(m => m.MemoryList[0].Name, new {id="title", placeholder = "memory name..", type = "text"})' +
+                '                   <br>Description: ' +
+                '                   @Html.TextBoxFor(m => m.MemoryList[0].Description, new {id="desc" ,placeholder = "memory description..", type = "text"})' +
+                '                   <br>Tags (comma seperated):' +
+                '                   @Html.TextBoxFor(m => m.MemoryList[0].Tags, new {id="desc"})' +
+                '                   <br>' +
+                '                   <input type="submit" value="Submit">';
+
+            //Populate the hidden fields for the lat and longitude of the just added moment
+            document.getElementById('lat').value = e.latlng.lat;
+            document.getElementById('lng').value = e.latlng.lng;
+
+            marker = L.marker([e.latlng.lat, e.latlng.lng],
+                { draggable: false },
+                { clickable: true },
+                { title: 'title' },
+                { alt: 'alt' },
+                { riseOnHover: true }).addTo(map);
+
+            marker.bindPopup(popupTemplate).openPopup();
+            map.setView(e.latlng, map.getZoom());
+            
+        }
+
+        //When Double Click happens zoom in and center to the clicked region
+        function doubleClick(e) {
+            map.setView(e.latlng, map.getZoom() + 1);
+        }
+        
+        //zoom control
+        var zoomControl = new L.Control.Zoom({ position: 'topright' }).addTo(map);
+
+        //loading spinner control
+        var loadingControl = L.Control.loading({position: 'topright', zoomControl: zoomControl}).addTo(map);
+        
+        //User Locate Control
+        L.control.locate({ follow: false , position: 'topright' }).addTo(map);
+
+        //Search Bar Control
+        new L.Control.GeoSearch({
+            provider: new L.GeoSearch.Provider.OpenStreetMap(),
+            showMarker: false,
+            zoomLevel: 13
+        }).addTo(map);
+
+
+        //Remove the marker on close of the popup. We will store the marker if the "Submit" is clicked and will re-populate the markers on page load anyways.
+        map.on('popupclose', function() {
+            map.removeLayer(marker);
+        });
+
+    </script>

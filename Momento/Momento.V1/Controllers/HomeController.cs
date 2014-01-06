@@ -33,6 +33,7 @@ namespace Momento.V1.Controllers
             return View();
         }
 
+        [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult AddMemory(Memories viewModel)
         {
             return View("Index", viewModel);
