@@ -8,7 +8,8 @@
         <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no' />
         
         <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.6.4/leaflet.css" />
-        <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
+        <link rel="stylesheet" href="/Content/locate.css" />
+        <link rel="stylesheet" href="/Content/geosearch.css" />
 
         <script src="http://cdn.leafletjs.com/leaflet-0.6.4/leaflet.js"></script>
         <script src="/Scripts/Vendors/l.control.geosearch.js"></script>
@@ -16,14 +17,20 @@
         <script src="/Scripts/Vendors/Control.Loading.js"></script>
         <script src="/Scripts/Vendors/L.Control.Locate.js"></script>
 
-
         @Styles.Render("~/Content/css")
         @Scripts.Render("~/bundles/modernizr")
     </head>
+
     <body class="left">
+        
+        <div id='header'>
+            <h1>Store Locator</h1>
+        </div>
+
         @RenderBody()
+        
 
         @Scripts.Render("~/bundles/jquery")
-        @RenderSection("scripts", required: false)
     </body>
+
 </html>

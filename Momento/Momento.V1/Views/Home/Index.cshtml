@@ -6,41 +6,50 @@
     ViewBag.Title = "Home Page";
 }
 
-@*@using (Html.BeginForm("AddMemory", "Home", FormMethod.Post))
-{*@
-    
-    <div id="sidebar">
-        <h1 style="color:cornflowerblue;"><strong>Your Moments</strong></h1>
-        <div id="outer-moment" style="height:150px;border:1px double #00ff00;display:block;">
-            <div id="inner-moment" style="height:50px;display:block;">
-                <img id="inner-moment-img" src="http://placekitten.com/g/20/20" height="50" width="50" style="float:left;"/>
-                <h4 id="inner-moment-h4" style="padding-left:60px;padding-top:20px;"></h4>    
+    <div id="content">    
+        @using (Html.BeginForm())
+        {
+            <div class="limiter">  
+                <a id="showall" class="hidden" href="#">Address filter</a>
+                <div class="state-group dc">
+                        <h3 class="state-label">DC</h3>
+                        <div class="venue">
+                            <div class="location">
+                                <a href="#4b7f23d5f964a520991930e3">1471 P St NW</a> at 15th St NW
+                            </div>
+                            <div class="phone">(202) 234-7336</div>
+                        </div>
+                    </div>
+                    <div class="state-group pa">
+                        <h3 class="state-label">PA</h3>
+                        <div class="venue">
+                            <div class="location">
+                                <a href="#4d02663e68e38eec5f5bdfc4">68 Coulter Ave</a> <br><em>Ardmore</em>
+                            </div>
+                            <div class="phone">(610) 642-9400</div>
+                        </div>
+                        <div class="venue">
+                            <div class="location">
+                                <a href="#4d516cbd9d49370469b6cc39">3925 Walnut St</a> <br><em>Philadelphia</em>
+                            </div>
+                            <div class="phone">(215) 386-1365</div>
+                        </div>
+                    </div>
+                <div id="no-venues" class="hidden">Oops! Looks like there are no <strong>sweetgreen</strong> locations within five miles of this address. Try another search.</div>
             </div>
-            <div id="inner-moment-desc" style="height:80px;margin-top:10px;display:block;">
-                <p id="inner-p">tenl;jnf nkjdfn;wgkej f;zkjsdnf jksdnfjh bsdjhfb skjdhbf kawjehf bkjdbc ljshebrfh sdhb sjhdb sjdhbf wkjehbf sjdhfb wejhbf</p>    
-            </div>
-        </div>
-        <br />
-        
-        <div id="test">
-            <h1 id="test-header"></h1>
-            <p id="test-desc"></p>
-            <img id="test-img" src="." alt="" />
-        </div>
-        
-
+        }
     </div>
 
     <div id="map" class="map"></div>
 
     @Html.HiddenFor(m => m.MemoryList[0].Longitude, new {id = "lng"})
     @Html.HiddenFor(m => m.MemoryList[0].Latitude, new {id = "lat"})
+    
 
     <script>
-
         //Initialize the Mapbox Tiles layer and leaflet options
         var mapboxTiles = L.tileLayer('https://{s}.tiles.mapbox.com/v3/examples.map-zr0njcqy/{z}/{x}/{y}.png');
-        var map = L.map('map', { zoomControl: false }, {loadingControl: true}).addLayer(mapboxTiles);
+        var map = L.map('map', { zoomControl: false }).addLayer(mapboxTiles);
 
         //Find the users location to get the initial position of the map
         if (navigator.geolocation) {
@@ -112,9 +121,6 @@
         //zoom control
         var zoomControl = new L.Control.Zoom({ position: 'topright' }).addTo(map);
 
-        //loading spinner control
-        var loadingControl = L.Control.loading({position: 'topright', zoomControl: zoomControl}).addTo(map);
-        
         //User Locate Control
         L.control.locate({ follow: false , position: 'topright' }).addTo(map);
 
@@ -124,7 +130,6 @@
             showMarker: false,
             zoomLevel: 13
         }).addTo(map);
-
 
         //Remove the marker on close of the popup. We will store the marker if the "Submit" is clicked and will re-populate the markers on page load anyways.
         map.on('popupclose', function() {
