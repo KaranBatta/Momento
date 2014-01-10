@@ -7,8 +7,7 @@
 }
 
     <div id="content">    
-        @using (Html.BeginForm())
-        {
+       
             <div class="limiter">  
                 <a id="showall" class="hidden" href="#">Address filter</a>
                 <div class="state-group dc">
@@ -88,18 +87,19 @@
         var marker;
         //When Single Click happens on the map, add a new Marker
         function singleClick(e) {
-            var popupTemplate = 'Memory: ' +
+            
+            //Populate the hidden fields for the lat and longitude of the just added moment
+            var lat = document.getElementById('lat').value = e.latlng.lat;
+            var lng = document.getElementById('lng').value = e.latlng.lng;
+
+            var popupTemplate = '<form action="@Url.Action("AddMemory","Home")" method="post">Memory: ' +
                 '                   @Html.TextBoxFor(m => m.MemoryList[0].Name, new {id="title", placeholder = "memory name..", type = "text"})' +
                 '                   <br>Description: ' +
                 '                   @Html.TextBoxFor(m => m.MemoryList[0].Description, new {id="desc" ,placeholder = "memory description..", type = "text"})' +
                 '                   <br>Tags (comma seperated):' +
                 '                   @Html.TextBoxFor(m => m.MemoryList[0].Tags, new {id="desc"})' +
                 '                   <br>' +
-                '                   <input type="submit" value="Submit">';
-
-            //Populate the hidden fields for the lat and longitude of the just added moment
-            document.getElementById('lat').value = e.latlng.lat;
-            document.getElementById('lng').value = e.latlng.lng;
+                '                   <input type="submit" value="Submit"></form>';
 
             marker = L.marker([e.latlng.lat, e.latlng.lng],
                 { draggable: false },
